@@ -1,0 +1,143 @@
+.lay-box {
+  flex: 1 0 auto;
+  background: #fff;
+  width: 100%;
+}
+.clearfix {
+  zoom: 1;
+}
+
+.main-box {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff!important;
+  flex: 1;
+  .main-login-wrapper {
+    width: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 33px 0;
+    .main-login {
+      width: 100%;
+      border: none;
+      border-radius: 4px;
+      height: max-content;
+      .container {
+        max-width: 376px;
+        background: #fff;
+        margin: 0 auto;
+      }
+      .login-wrap {
+        display: flex;
+        justify-content: center;
+        .login-qr-box {
+          width: 100%;
+          background-color: #fff;
+          padding: 0 16px;
+          box-sizing: border-box;
+
+          .go-reg {
+            margin: 24px auto 0;
+            font-size: 14px;
+            line-height: 24px;
+            color: #909898;
+            text-align: center;
+            padding-bottom: 32px;
+            a {
+              cursor: pointer;
+              color: var(--van-primary-color);
+            }
+          }
+
+          .forget-line {
+            margin-top: 24px;
+            justify-content: flex-end;
+            font-size: 14px;
+            line-height: 24px;
+            color: #909898;
+            display: flex;
+            a {
+              cursor: pointer;
+              color: var(--van-primary-color);
+            }
+          }
+          .login-title-box {
+            width: 100%;
+            padding: 32px 0 0;
+            .login-qr-title {
+              font-weight: 300;
+              font-size: 24px;
+              line-height: 36px;
+              color: #0d0e0e;
+            }
+            .type-tab {
+              display: flex;
+              margin-top: 4px;
+              .active {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 24px;
+                padding: 20px 0 18px;
+                cursor: pointer;
+                border-bottom: 2px solid var(--van-primary-color);
+                color: #0d0e0e;
+              }
+            }
+          }
+          .login-qr-form {
+            position: relative;
+            margin: 24px auto 0;
+            .form-btn-box {
+              margin: 12px auto 0;
+            }
+            .login-form-group {
+              margin-bottom: 12px;
+              label {
+                display: block;
+                margin-bottom: 8px;
+                font-size: 14px;
+                color: #909898;
+              }
+              .login-from-error {
+                position: relative;
+                margin-top: 16px;
+                padding-top: 3px;
+                font-size: 14px;
+                line-height: 1.2;
+                color: #f7647e;
+                .error {
+                  position: absolute;
+                  top: -8px;
+                }
+                .bg-comp-error-normal {
+                  color: #f7647e;
+                  transition: all .35s ease;
+                }
+              }
+              .phone-email-wrap,.login-form-input {
+                position: relative;
+                input.error-border {
+                  border-color: #f7647e;
+                }
+                input {
+                  position: relative;
+                  display: block;
+                  width: 100%;
+                  box-sizing: border-box;
+                  padding: 17px 40px 16px 16px;
+                  height: 48px;
+                  font-size: 16px;
+                  border: 1px solid #9aa3a3;
+                  border-radius: 4px;
+                  outline: none;
+                  transition: all .35s ease;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

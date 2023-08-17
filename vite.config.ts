@@ -1,6 +1,7 @@
 import path from 'path'
 import { loadEnv } from 'vite'
 import type { ConfigEnv, UserConfig } from 'vite'
+import WindiCSS from 'vite-plugin-windicss'
 
 import { visualizer } from 'rollup-plugin-visualizer'
 import Components from 'unplugin-vue-components/vite'
@@ -33,6 +34,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       vue(),
       vueJsx(),
       visualizer(),
+      WindiCSS(),
 
       legacy({
         targets: ['defaults', 'not IE 11'],
@@ -113,9 +115,19 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         ? undefined
         : {
             '/api': {
-              target: '',
+              target: 'http://192.168.31.86:8888/',
               ws: false,
               changeOrigin: true,
+            },
+            '/uploads': {
+              target: 'http://192.168.31.86:8888/',
+              ws: false,
+              changeOrigin: true,
+            },
+            '/ws': {
+              target: 'wss://api.huobi.pro/', // 这里是后台ws访问地址
+              changeOrigin: true, // 允许跨域设置
+              ws: true, // websocket代理设置
             },
           },
     },
