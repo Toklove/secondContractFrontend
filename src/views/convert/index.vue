@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { showFailToast, showToast } from 'vant'
+import { watch } from 'vue'
 import { getCoinList, postExchange } from '@/api/convert'
 
 const onClickLeft = () => history.back()
@@ -54,6 +55,19 @@ const submitForm = async (e) => {
 
 const coinList = reactive([])
 
+const fromCoin = ref({
+  text: 'USDT',
+  value: 'usdt',
+  amount: 0,
+  convert: 1,
+})
+const toCoin = ref({
+  text: 'USDT',
+  value: 'usdt',
+  amount: 0,
+  convert: 1,
+})
+
 onBeforeMount(async () => {
   const { data } = await getCoinList()
   data.forEach((item) => {
@@ -61,14 +75,32 @@ onBeforeMount(async () => {
       text: item.title,
       value: item.name,
       amount: item.wallet.amount,
+      convert: item.convert,
     }
-    if (item.name === 'usdt')
+    if (item.name === 'usdt') {
+      fromCoin.value = record
       balance.value.from = record.amount
-    else if (item.name === 'cny')
+    } else if (item.name === 'cny') {
+      toCoin.value = record
       balance.value.to = record.amount
+    }
 
     coinList.push(record)
   })
+})
+
+watch(form.value, (value, oldValue, onCleanup) => {
+  coinList.forEach((item) => {
+    if (item.name === value.from)
+      fromCoin.value = item
+    else if (item.name === value.to)
+      toCoin.value = item
+  })
+})
+
+const convertAmount = computed(() => {
+  const usd = form.value.count * fromCoin.value.convert
+  return (usd / toCoin.value.convert).toFixed(4)
 })
 
 const allIn = () => {
@@ -98,6 +130,9 @@ const confirmPicker = (e) => {
 
 const changeConvert = () => {
   [form.value.from, balance.value.from, form.value.to, balance.value.to] = [form.value.to, balance.value.to, form.value.from, balance.value.from]
+  const temp = fromCoin.value
+  fromCoin.value = toCoin.value
+  toCoin.value = temp
 }
 </script>
 
@@ -167,8 +202,11 @@ const changeConvert = () => {
             </div>
           </div>
         </div>
+        <div class="flex justify-end text-[10px]">
+          {{ form.count ? form.count : 0 }}&nbsp;{{ form.from.toUpperCase() }}&nbsp;=&nbsp;{{ convertAmount }}&nbsp;{{ form.to.toUpperCase() }}
+        </div>
         <div>
-<!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" />-->
+          <!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" /> -->
         </div>
         <div class="form-btn-box mt-[24px]">
           <van-button block type="primary" native-type="submit">

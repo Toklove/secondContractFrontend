@@ -330,3 +330,9 @@ const getVerifyStatus = () => {
   display:inline-block;
 }
 </style>
+
+<style>
+.van-popup,.van-overlay {
+  z-index: 9999999 !important;
+}
+</style>

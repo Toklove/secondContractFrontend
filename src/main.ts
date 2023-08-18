@@ -26,6 +26,7 @@ import 'vant/es/dialog/style'
 import 'vant/es/notify/style'
 import 'vant/es/image-preview/style'
 import 'element-plus/dist/index.css'
+import {createI18n} from "vue-i18n";
 
 const app = createApp(App)
 
@@ -36,9 +37,13 @@ if (isHttps)
 else
   app.config.globalProperties.$wsUrl = `ws://${document.location.host}/ws`
 
+const i18n = createI18n({
+  // something vue-i18n options here ...
+})
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-
+app.use(i18n)
 app.use(router)
 app.use(pinia)
 app.use(MakeitCaptcha)

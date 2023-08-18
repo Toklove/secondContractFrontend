@@ -13,6 +13,7 @@ const form = ref({
   // code: null,
   coin: 'usdt',
   info_id: null,
+  pass: null,
   show_text: '请选择提现地址',
 })
 
@@ -21,12 +22,20 @@ const validForm = ref({
     show: false,
     message: '请输入提现数量',
   },
+  pass: {
+    show: false,
+    message: '请输入您的提现密码',
+  },
 })
 
 const submitForm = async (e) => {
   e.preventDefault()
   if (!form.value.count) {
     validForm.value.count.show = true
+    return
+  }
+  if (!form.value.pass) {
+    validForm.value.pass.show = true
     return
   }
   if (!form.value.info_id) {
@@ -43,6 +52,7 @@ const submitForm = async (e) => {
     return
   }
   showToast('提交成功')
+  await router.push({ name: 'withdrawLog' })
 }
 
 // function successCaptcha(e) {
@@ -73,14 +83,39 @@ const getCoinWithdraw = async () => {
   })
 }
 
+const selectConfig = ref({
+  text: null,
+  time: null,
+  today_free_fee: null,
+  value: null,
+  min: null,
+  max: null,
+  fee_type: null,
+  fee_scale: null,
+  fee_num: null,
+  amount: null,
+})
+
 onBeforeMount(async () => {
   const { data } = await getCoinList()
   data.forEach((item) => {
     const record = {
       text: item.title,
       value: item.name,
+      time: item.time,
+      today_free_fee: item.today_free_fee,
+      min: item.withdraw_min,
+      max: item.withdraw_max,
+      fee_type: item.withdraw_fee_type,
+      fee_scale: item.withdraw_fee_scale,
+      fee_num: item.withdraw_fee_num,
       amount: item.wallet.amount,
     }
+    console.log(record.value === 'usdt')
+    if (record.value === 'usdt')
+      selectConfig.value = record
+
+    console.log(selectConfig)
     coinList.push(record)
   })
   await getCoinWithdraw()
@@ -88,6 +123,7 @@ onBeforeMount(async () => {
 
 const confirmPicker = async (e) => {
   const selectData = e.selectedOptions[0]
+  selectConfig.value = selectData
   form.value.coin = selectData.value
   await getCoinWithdraw()
   form.value.show_text = '请选择提现地址'
@@ -147,8 +183,8 @@ const confirmBankPicker = (e) => {
             </div>
           </div>
         </div>
-        <div class="login-form-group global-form-group">
-          <label>提现数量</label>
+        <div class="login-form-group">
+          <label style="color: #0d0e0e;font-weight: 500;">提现数量</label>
           <div class="login-form-input">
             <input v-model="form.count" name="count" placeholder="输入您要提现的数量" :class="validForm.count.show ? 'error-border' : ''" type="text" class="input" @focus="validForm.count.show = false">
           </div> <div class="login-from-error">
@@ -157,8 +193,18 @@ const confirmBankPicker = (e) => {
             </div>
           </div>
         </div>
+        <div class="login-form-group global-form-group">
+          <label>提现密码</label>
+          <div class="login-form-input">
+            <input v-model="form.pass" name="pass" placeholder="输入您的提现密码" :class="validForm.pass.show ? 'error-border' : ''" type="text" class="input" @focus="validForm.pass.show = false">
+          </div> <div class="login-from-error">
+            <div class="bg-comp-error-normal error" :class="validForm.pass.show ? 'opacity-100' : 'opacity-0'">
+              {{ validForm.pass.message }}
+            </div>
+          </div>
+        </div>
         <div>
-<!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" />-->
+          <!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" /> -->
         </div>
         <div class="form-btn-box mt-[24px]">
           <van-button block type="primary" native-type="submit">
@@ -166,6 +212,30 @@ const confirmBankPicker = (e) => {
           </van-button>
         </div>
       </form>
+      <div class="mt-8">
+        <div class="alert">
+          <div class="flex">
+            <span>提现时间:&nbsp;</span>
+            <span class="font-bold">{{ selectConfig.time }}</span>
+          </div>
+          <div class="flex">
+            <span>最低提现金额:&nbsp;</span>
+            <span class="font-bold">{{ selectConfig.min }}</span>
+          </div>
+          <div class="flex">
+            <span>最高提现金额:&nbsp;</span>
+            <span class="font-bold">{{ selectConfig.max }}</span>
+          </div>
+          <div class="flex">
+            <span>提现手续费:&nbsp;</span>
+            <span class="font-bold">{{ selectConfig.fee_type === '0' ? `${selectConfig.fee_scale}%` : selectConfig.fee_num }}</span>
+          </div>
+          <div class="flex">
+            <span>当日首次提现免手续费金额:&nbsp;</span>
+            <span class="font-bold">{{ selectConfig.today_free_fee }}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <van-popup v-model:show="showPicker" round position="bottom">
       <van-picker
@@ -273,4 +343,11 @@ const confirmBankPicker = (e) => {
     }
   }
 }
+ .alert {
+   border: 1px solid var(--van-primary-color);
+   padding: 8px 12px;
+   border-radius: 4px;
+   color: #4b618c;
+   font-size: 12px;
+ }
 </style>

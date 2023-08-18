@@ -112,7 +112,7 @@ const buyContact = (type) => {
 const config = ref({
   contract_time: '1,5,10,20',
   contract_power: '5~10,20~30,30~40,40~50',
-  contract_amount: '10,100,1000,10000,100000',
+  // contract_amount: '10,100,1000,10000,100000',
   contract_time_min: '1,2,3,4',
   contractList: [],
   wallet: {
@@ -129,7 +129,7 @@ const initData = async () => {
   const contractList = []
   record.contract_time = data.contract_time.split(',')
   record.contract_power = data.contract_power.split(',')
-  record.contract_amount = data.contract_amount.split(',')
+  // record.contract_amount = data.contract_amount.split(',')
   record.contract_time_min = data.contract_time_min.split(',')
   record.contract_time.forEach((item, index) => {
     const data = {
@@ -370,10 +370,10 @@ onUnmounted(() => {
             <span class="text-[#8d9dbc]">执行价</span>
             <span>{{ contractInfo.buy_price }}</span>
           </div>
-          <div v-if="contractInfo.status == 0" class="flex justify-between items-center green">
-            <span>预期收益</span>
-            <span>{{ (contractInfo.amount * contractInfo.power_list[1] / 100).toFixed(2) }}</span>
-          </div>
+<!--          <div v-if="contractInfo.status == 0" class="flex justify-between items-center green">-->
+<!--            <span>预期收益</span>-->
+<!--            <span>{{ (contractInfo.amount * contractInfo.power_list[1] / 100).toFixed(2) }}</span>-->
+<!--          </div>-->
         </div>
         <div class="my-4 mx-6">
           <van-button color="#588bf7" block round @click="continueOrder">

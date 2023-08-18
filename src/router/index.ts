@@ -108,6 +108,20 @@ const routes = [
     },
     component: () => import('@/views/user/resetPassword.vue'),
   }, {
+    path: '/resetLoginPass',
+    name: 'resetLoginPass',
+    meta: {
+      title: '登录密码',
+    },
+    component: () => import('@/views/user/resetLoginPass.vue'),
+  }, {
+    path: '/resetWithdrawPass',
+    name: 'resetWithdrawPass',
+    meta: {
+      title: '提现密码',
+    },
+    component: () => import('@/views/user/resetWithdrawPass.vue'),
+  }, {
     path: '/addWithdraw',
     name: 'addWithdraw',
     meta: {

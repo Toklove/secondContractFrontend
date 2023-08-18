@@ -24,9 +24,9 @@ watch(route, () => {
   else if (path.value === '/交易')
     active.value = 2
   else if (path.value === '/contract')
-    active.value = 3
+    active.value = 2
   else if (path.value === '/wallet')
-    active.value = 4
+    active.value = 3
 })
 
 const whiteList = ref(['/login', '/register'])
@@ -41,13 +41,13 @@ const whiteList = ref(['/login', '/register'])
       <van-tabbar-item :icon="active === 1 ? nav2IconActive : nav2Icon" to="/market">
         行情
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" @click="showToast('升级中')">
-        交易
-      </van-tabbar-item>
-      <van-tabbar-item :icon="active === 3 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
+      <!--      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" @click="showToast('升级中')"> -->
+      <!--        交易 -->
+      <!--      </van-tabbar-item> -->
+      <van-tabbar-item :icon="active === 2 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
         合约
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 4 ? nav5IconActive : nav5Icon" to="/wallet">
+      <van-tabbar-item :icon="active === 3 ? nav5IconActive : nav5Icon" to="/wallet">
         资产
       </van-tabbar-item>
     </van-tabbar>
@@ -55,6 +55,12 @@ const whiteList = ref(['/login', '/register'])
 </template>
 
 <style lang="scss">
+.van-tabbar--fixed {
+  z-index: 9999998 !important;
+}
+.van-tabbar {
+  background: var(--van-tabbar-background) !important;
+}
 @media (min-width: 600px) and (min-height: 640px) {
   .van-tabbar--fixed {
     bottom: 0;
