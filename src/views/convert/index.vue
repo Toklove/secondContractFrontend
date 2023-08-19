@@ -2,6 +2,7 @@
 import { showFailToast, showToast } from 'vant'
 import { watch } from 'vue'
 import { getCoinList, postExchange } from '@/api/convert'
+import router from '@/router'
 
 const onClickLeft = () => history.back()
 const showPicker = ref(false)
@@ -36,10 +37,10 @@ const submitForm = async (e) => {
   //   showFailToast('请完成滑块验证')
   //   return
   // }
-  if (balance.value.from < form.value.count) {
-    showFailToast('余额不足以兑换')
-    return
-  }
+  // if (balance.value.from < form.value.count) {
+  //   showFailToast('余额不足以兑换')
+  //   return
+  // }
   const { msg, code, data } = await postExchange(form.value)
   if (code !== 1) {
     showFailToast(msg)
@@ -47,6 +48,7 @@ const submitForm = async (e) => {
   }
   showToast('兑换成功')
   balance.value = data
+  router.push({ name: 'wallet' })
 }
 
 // function successCaptcha(e) {

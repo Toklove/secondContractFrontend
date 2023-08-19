@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css'
 // 导入路由组件
 import mian from '@/views/index.vue'
 import market from '@/views/market/index.vue'
+import exchange from '@/views/exchange/index.vue'
 import contract from '@/views/contract/index.vue'
 import wallet from '@/views/wallet/index.vue'
 import login from '@/views/user/login.vue'
@@ -28,6 +29,14 @@ const routes = [
     component: market,
     meta: {
       title: '行情',
+    },
+  },
+  {
+    path: '/exchange',
+    name: 'exchange',
+    component: exchange,
+    meta: {
+      title: '交易',
     },
   },
   {

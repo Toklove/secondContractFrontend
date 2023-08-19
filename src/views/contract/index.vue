@@ -6,11 +6,79 @@ import dayjs from 'dayjs'
 import Chart from '@/components/chart/index.vue'
 import { getPairConfig } from '@/api/market'
 import { createContract, getContractInfo } from '@/api/contract'
+import { market } from '@/api'
 
 const onClickLeft = () => history.back()
 const wsUrl = getCurrentInstance()?.appContext.config.globalProperties.$wsUrl
+const marketCoin = reactive([])
 
-const socket = new WebSocket(wsUrl)
+const createSubTickerMarketRequest = symbol => ({
+  sub: `market.${symbol}.ticker`,
+})
+
+let marketSocket = new WebSocket(wsUrl)
+
+const handlerMarketData = (msg) => {
+  const data = JSON.parse(msg)
+  if (data.ping)
+  { marketSocket.send(JSON.stringify({ pong: data.ping })) }
+  else if (data.tick)
+  {
+    const flag = data.ch.split('.')[1]
+    marketCoin.forEach((item) => {
+      if (flag === item.dataFlag) {
+        item.prevData = item.nowData
+        item.nowData = data.tick
+        item.upOrDown = item.nowData.close > item.prevData.close
+        item.diff = ((item.nowData.close - item.nowData.open) / item.nowData.open * 100).toFixed(2)
+      }
+    })
+  }
+}
+const subscribeMarketData = (SYMBOL) => {
+  marketSocket.send(JSON.stringify(createSubTickerMarketRequest(SYMBOL)))
+}
+
+marketSocket.onopen = () => {
+  market().then((res) => {
+    res.data.forEach((item) => {
+      item.nowData = {
+        open: 51732,
+        high: 52785.64,
+        low: 51000,
+        close: 52735.63,
+        amount: 13259.24137056181,
+        vol: 687640987.4125315,
+        count: 448737,
+        bid: 52732.88,
+        bidSize: 0.036,
+        ask: 52732.89,
+        askSize: 0.583653,
+        lastPrice: 52735.63,
+        lastSize: 0.03,
+      }
+      item.prevData = item.nowData
+      item.upOrDown = true
+      item.diff = 1
+      item.dataFlag = item.symbol.replace('_', '')
+      subscribeMarketData(item.dataFlag)
+      marketCoin.push(item)
+    })
+  })
+}
+
+marketSocket.onmessage = (event) => {
+  const blob = event.data
+  const fileReader = new FileReader()
+  fileReader.onload = (e) => {
+    const payloadData = new Uint8Array(e.target.result)
+    const msg = pako.inflate(payloadData, { to: 'string' })
+    handlerMarketData(msg)
+  }
+  fileReader.readAsArrayBuffer(blob)
+}
+
+let socket = new WebSocket(wsUrl)
 const router = useRouter()
 const pair = ref(router.currentRoute.value.query.pair)
 
@@ -95,6 +163,7 @@ socket.onopen = () => {
   subscribeData()
 }
 
+const showSelectPopup = ref(false)
 const showPopup = ref(false)
 const showOrderPopup = ref(false)
 
@@ -123,6 +192,10 @@ const config = ref({
 const nowConfig = ref({})
 
 const initData = async () => {
+  if (marketSocket.readyState === WebSocket.CLOSED)
+    marketSocket = new WebSocket(wsUrl)
+  if (socket.readyState === WebSocket.CLOSED)
+    socket = new WebSocket(wsUrl)
   const { code, data } = await getPairConfig(pair.value)
   const record = {}
   record.wallet = data.wallet
@@ -204,7 +277,7 @@ const confirmContract = async () => {
   }, 1e3)
 
   contractInfo.value = data
-  initData()
+  await initData()
   showOrderPopup.value = true
 }
 
@@ -218,19 +291,28 @@ const continueOrder = async () => {
   // contractInfo.value = null
 }
 
+const changeSymbol = async (symbol) => {
+  await router.push({ path: 'contract', query: { pair: symbol } })
+  location.reload()
+}
+
 onUnmounted(() => {
   socket.close()
+  marketSocket.close()
   clearInterval(contractInfo.value.timer)
 })
 </script>
 
 <template>
-  <div class="">
+  <div :key="router.currentRoute.value.query.pair">
     <van-nav-bar
       @click-left="onClickLeft"
     >
       <template #title>
-        <span class="text-[#121935]">{{ coinName }}/{{ pairName }} 极速合约</span>
+        <div class="flex items-center">
+          <van-icon name="exchange" color="#121935" class="font-bold mr-2" @click="showSelectPopup = true" />
+          <span class="text-[#121935]">{{ coinName }}/{{ pairName }} 极速合约</span>
+        </div>
       </template>
       <template #left>
         <van-icon name="arrow-left" color="#121935" />
@@ -370,15 +452,31 @@ onUnmounted(() => {
             <span class="text-[#8d9dbc]">执行价</span>
             <span>{{ contractInfo.buy_price }}</span>
           </div>
-<!--          <div v-if="contractInfo.status == 0" class="flex justify-between items-center green">-->
-<!--            <span>预期收益</span>-->
-<!--            <span>{{ (contractInfo.amount * contractInfo.power_list[1] / 100).toFixed(2) }}</span>-->
-<!--          </div>-->
+          <!--          <div v-if="contractInfo.status == 0" class="flex justify-between items-center green"> -->
+          <!--            <span>预期收益</span> -->
+          <!--            <span>{{ (contractInfo.amount * contractInfo.power_list[1] / 100).toFixed(2) }}</span> -->
+          <!--          </div> -->
         </div>
         <div class="my-4 mx-6">
           <van-button color="#588bf7" block round @click="continueOrder">
             继续下单
           </van-button>
+        </div>
+      </div>
+    </van-popup>
+    <van-popup
+      v-model:show="showSelectPopup"
+      position="left"
+      :style="{ width: '80%', height: '100%' }"
+    >
+      <div class="flex flex-col p-[20px]">
+        <div class="flex justify-between mb-2">
+          <span>名称</span>
+          <span>最新价格</span>
+        </div>
+        <div v-for="item in marketCoin" :key="item.id" class="flex justify-between mt-4" @click="changeSymbol(item.symbol)">
+          <span class="font-bold">{{ item.title }}</span>
+          <span class="font-z-mmm transition-all" :class="item.diff > 0 ? 'green' : 'red'">{{ item.nowData.lastPrice.toFixed(2) }}</span>
         </div>
       </div>
     </van-popup>

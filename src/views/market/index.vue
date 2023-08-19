@@ -33,16 +33,10 @@ const subscribeData = (SYMBOL) => {
   socket.send(JSON.stringify(createSubTickerRequest(SYMBOL)))
 }
 
-const config = ref({
-  banner: [],
-  msg: '',
-})
 onBeforeMount(async () => {
   loading.value = true
   if (socket.readyState === WebSocket.CLOSED)
     socket = new WebSocket(wsUrl)
-  const { data } = await indexConfig()
-  config.value = data
 })
 
 socket.onopen = () => {

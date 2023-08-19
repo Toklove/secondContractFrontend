@@ -5,8 +5,8 @@ import nav1IconActive from '@/assets/img/nav-1-active.png'
 import nav1Icon from '@/assets/img/nav-1.png'
 import nav2IconActive from '@/assets/img/nav-2-active.png'
 import nav2Icon from '@/assets/img/nav-2.png'
-// import nav3IconActive from '@/assets/img/nav-3-active.png'
-// import nav3Icon from '@/assets/img/nav-3.png'
+import nav3IconActive from '@/assets/img/nav-3-active.png'
+import nav3Icon from '@/assets/img/nav-3.png'
 import nav4IconActive from '@/assets/img/nav-4-active.png'
 import nav4Icon from '@/assets/img/nav-4.png'
 import nav5IconActive from '@/assets/img/nav-5-active.png'
@@ -21,12 +21,12 @@ watch(route, () => {
     active.value = 0
   else if (path.value === '/market')
     active.value = 1
-  else if (path.value === '/交易')
+  else if (path.value === '/exchange')
     active.value = 2
   else if (path.value === '/contract')
-    active.value = 2
-  else if (path.value === '/wallet')
     active.value = 3
+  else if (path.value === '/wallet')
+    active.value = 4
 })
 
 const whiteList = ref(['/login', '/register'])
@@ -41,13 +41,13 @@ const whiteList = ref(['/login', '/register'])
       <van-tabbar-item :icon="active === 1 ? nav2IconActive : nav2Icon" to="/market">
         行情
       </van-tabbar-item>
-      <!--      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" @click="showToast('升级中')"> -->
-      <!--        交易 -->
-      <!--      </van-tabbar-item> -->
-      <van-tabbar-item :icon="active === 2 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
+      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" to="/exchange">
+        交易
+      </van-tabbar-item>
+      <van-tabbar-item :icon="active === 3 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
         合约
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 3 ? nav5IconActive : nav5Icon" to="/wallet">
+      <van-tabbar-item :icon="active === 4 ? nav5IconActive : nav5Icon" to="/wallet">
         资产
       </van-tabbar-item>
     </van-tabbar>

@@ -5,7 +5,7 @@ import pako from 'pako'
 const props = defineProps({
   symbol: {
     type: String,
-    default: 'btcusdt',
+    default: 'btc_usdt',
   },
 })
 
