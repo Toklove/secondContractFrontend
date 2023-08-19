@@ -18,16 +18,26 @@ const userStore = useUserStore()
       </template>
     </van-nav-bar>
     <div class="w-full bg-white mt-4 rounded-t-xl min-h-[100vh] p-[20px]">
-      <van-button v-if="userStore.userInfo.verify_status === '1'" type="primary" disabled block>
+      <van-button v-if="userStore.userInfo.verify_status === '3'" type="primary" disabled block>
         已通过验证
       </van-button>
       <div>
-        <van-button type="primary" block class="mb-4" @click="$router.push({ name: 'identPrimary' })">
-          初级认证
-        </van-button>
-        <van-button type="primary" block :disabled="userStore.userInfo.primary_verify_status !== '1'" @click="$router.push({ name: 'identAdvanced' })">
-          高级认证
-        </van-button>
+        <div class="mb-4">
+          <van-button v-if="userStore.userInfo.primary_verify_status !== '3'" type="primary" block @click="$router.push({ name: 'identPrimary' })">
+            {{ userStore.userInfo.primary_verify_status === '2' ? '认证未通过' : userStore.userInfo.primary_verify_status === '1' ? '认证中' : '初级认证' }}
+          </van-button>
+          <van-button v-else type="primary" disabled block>
+            已通过初级认证
+          </van-button>
+        </div>
+        <div class="mb-4">
+          <van-button v-if="userStore.userInfo.advanced_verify_status !== '3'" :disabled="userStore.userInfo.primary_verify_status !== '3'" type="primary" block @click="$router.push({ name: 'identAdvanced' })">
+            {{ userStore.userInfo.advanced_verify_status === '2' ? '认证未通过' : userStore.userInfo.advanced_verify_status === '1' ? '认证中' : '高级认证' }}
+          </van-button>
+          <van-button v-else type="primary" disabled block>
+            已通过高级认证
+          </van-button>
+        </div>
       </div>
     </div>
   </div>

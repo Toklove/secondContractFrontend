@@ -72,7 +72,7 @@ onBeforeMount(() => {
       </template>
     </van-nav-bar>
     <div class="w-full bg-white mt-4 rounded-t-xl min-h-[100vh] p-[20px]">
-      <van-button v-if="userStore.userInfo.advanced_verify_status === '1'" type="primary" disabled block>
+      <van-button v-if="userStore.userInfo.advanced_verify_status === '3'" type="primary" disabled block>
         已通过验证
       </van-button>
       <form v-else @submit="submitForm">

@@ -115,12 +115,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         ? undefined
         : {
             '/api': {
-              target: 'http://192.168.31.86:8888/',
+              target: 'http://192.168.2.14:8888/',
               ws: false,
               changeOrigin: true,
             },
             '/uploads': {
-              target: 'http://192.168.31.86:8888/',
+              target: 'http://192.168.2.14:8888/',
               ws: false,
               changeOrigin: true,
             },

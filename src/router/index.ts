@@ -122,6 +122,13 @@ const routes = [
     },
     component: () => import('@/views/user/resetWithdrawPass.vue'),
   }, {
+    path: '/chat',
+    name: 'chat',
+    meta: {
+      title: '在线客服',
+    },
+    component: () => import('@/views/chat/index.vue'),
+  }, {
     path: '/addWithdraw',
     name: 'addWithdraw',
     meta: {

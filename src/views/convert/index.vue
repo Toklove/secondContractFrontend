@@ -89,7 +89,7 @@ onBeforeMount(async () => {
   })
 })
 
-watch(form.value, (value, oldValue, onCleanup) => {
+watch(form.value, (value) => {
   coinList.forEach((item) => {
     if (item.name === value.from)
       fromCoin.value = item

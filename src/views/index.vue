@@ -176,10 +176,18 @@ const getVerifyStatus = () => {
           <span class="text-[10px] font-[500] transition-all mt-[2px]" :class="item.diff > 0 ? 'green' : 'red'">{{ item.diff > 0 ? '+' : '' }}{{ item.diff }}%</span>
         </div>
       </div>
-      <div class="op-size-box">
-        <van-notice-bar background="transparent" color="#1f3f59" left-icon="volume-o">
-          {{ config.msg }}
-        </van-notice-bar>
+      <div class="flex">
+        <div class="op-size-box" style="width: 66%">
+          <van-notice-bar background="transparent" color="#1f3f59" left-icon="volume-o">
+            {{ config.msg }}
+          </van-notice-bar>
+        </div>
+        <div class="op-size-box ml-2 flex items-center flex-col justify-center text-[10px] py-4" style="width: 33%" @click="router.push({ name: 'chat' })">
+          <van-icon name="https://fastly.jsdelivr.net/npm/@vant/assets/icon-demo.png" size="24" />
+          <span class="mt-2">
+            联系客服
+          </span>
+        </div>
       </div>
       <div
         v-loading="loading" class="min-h-[400px] market"
