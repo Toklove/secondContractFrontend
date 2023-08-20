@@ -115,17 +115,17 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         ? undefined
         : {
             '/api': {
-              target: 'https://admin.abcc.live/',
+              target: 'http://localhost:8888/',
               ws: false,
               changeOrigin: true,
             },
             '/uploads': {
-              target: 'https://admin.abcc.live/',
+              target: 'http://localhost:8888/',
               ws: false,
               changeOrigin: true,
             },
             '/assets': {
-              target: 'https://admin.abcc.live/',
+              target: 'http://localhost:8888/',
               ws: false,
               changeOrigin: true,
             },

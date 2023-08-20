@@ -258,9 +258,9 @@ const getVerifyStatus = () => {
           </div>
           <div class="mt-4 rounded overflow-hidden">
             <van-cell-group>
-              <van-cell title="我的邀请" is-link />
-              <van-cell title="帮助中心" is-link />
-              <van-cell title="关于我们" is-link />
+<!--              <van-cell title="我的邀请" is-link />-->
+              <van-cell title="帮助中心" is-link to="other?type=help" />
+              <van-cell title="关于我们" is-link to="other?type=aboutus" />
             </van-cell-group>
           </div>
         </div>

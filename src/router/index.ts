@@ -75,6 +75,20 @@ const routes = [
     },
     component: () => import('@/views/contract/log.vue'),
   }, {
+    path: '/exchange/log',
+    name: 'exchangeLog',
+    meta: {
+      title: '交易订单',
+    },
+    component: () => import('@/views/exchange/log.vue'),
+  }, {
+    path: '/other',
+    name: 'other',
+    meta: {
+      title: '信息',
+    },
+    component: () => import('@/views/other/index.vue'),
+  }, {
     path: '/convert',
     name: 'convert',
     meta: {

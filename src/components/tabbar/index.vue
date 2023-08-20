@@ -41,7 +41,7 @@ const whiteList = ref(['/login', '/register'])
       <van-tabbar-item :icon="active === 1 ? nav2IconActive : nav2Icon" to="/market">
         行情
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" to="/exchange">
+      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" to="/exchange?pair=btc_usdt">
         交易
       </van-tabbar-item>
       <van-tabbar-item :icon="active === 3 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
