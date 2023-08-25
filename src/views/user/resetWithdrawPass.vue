@@ -1,6 +1,7 @@
 <script setup>
 import { showFailToast, showToast } from 'vant'
-import { resetPwd } from '@/api/user'
+import { resetPwd, resetWithPwd } from '@/api/user'
+import { useUserStore } from '@/stores/user'
 
 const onClickLeft = () => history.back()
 
@@ -25,9 +26,11 @@ const validForm = ref({
   },
 })
 
+const userStore = useUserStore()
+
 const submitForm = async (e) => {
   e.preventDefault()
-  if (!form.value.old_password) {
+  if (!form.value.old_password && userStore.userInfo.withdraw_pass) {
     validForm.value.old_password.show = true
     return
   }
@@ -39,7 +42,7 @@ const submitForm = async (e) => {
     validForm.value.agent_new_password.show = true
     return
   }
-  const { msg, code, data } = await resetPwd(form.value)
+  const { msg, code, data } = await resetWithPwd(form.value)
   if (code !== 1) {
     showFailToast(msg)
     return
@@ -63,7 +66,7 @@ const submitForm = async (e) => {
     </van-nav-bar>
     <div class="w-full bg-white mt-4 rounded-t-xl min-h-[100vh] p-[20px]">
       <form @submit="submitForm">
-        <div class="login-form-group global-form-group">
+        <div v-if="userStore.userInfo.withdraw_pass" class="login-form-group global-form-group">
           <label>旧密码</label>
           <div class="login-form-input">
             <input v-model="form.old_password" name="old_password" placeholder="输入您的旧密码" :class="validForm.old_password.show ? 'error-border' : ''" type="text" class="input" @focus="validForm.old_password.show = false">

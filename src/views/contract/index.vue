@@ -248,15 +248,15 @@ const confirmContract = async () => {
     return
   }
 
-  if (form.value.amount < nowConfig.value.min) {
-    showFailToast('小于最低下注金额')
-    return
-  }
-
-  if (form.value.amount > config.value.wallet.amount) {
-    showFailToast('余额不足')
-    return
-  }
+  // if (form.value.amount < nowConfig.value.min) {
+  //   showFailToast('小于最低下注金额')
+  //   return
+  // }
+  //
+  // if (form.value.amount > config.value.wallet.amount) {
+  //   showFailToast('余额不足')
+  //   return
+  // }
   form.value.pair = pair.value
   const { code, data, msg } = await createContract(form.value)
   if (code !== 1) {
@@ -267,7 +267,7 @@ const confirmContract = async () => {
   const main_sec = data.time * 60
 
   data.timer = setInterval(async () => {
-    if (data.need_count === 0) {
+    if (data.need_count <= 0) {
       clearInterval(data.timer)
       await getData()
       return
@@ -292,6 +292,7 @@ const continueOrder = async () => {
 }
 
 const changeSymbol = async (symbol) => {
+  localStorage.setItem('contractPair', symbol)
   await router.push({ path: 'contract', query: { pair: symbol } })
   location.reload()
 }
@@ -389,11 +390,11 @@ onUnmounted(() => {
             <div class="flex flex-row items-center overflow-scroll py-3">
               <div v-for="(item, index) in config.contractList" :key="index" class="time-box" :class="form.power === index ? 'active' : ''" @click="changeContract(index)">
                 <div class="time-box-txt-time">
-                  <span>{{ item.sec }}</span>
-                  <span class="time-box-txt-time-s">秒</span>
+                  <span>{{ item.time }}</span>
+                  <span class="time-box-txt-time-s">分</span>
                 </div>
                 <div class="time-box-txt-sm">
-                  {{ item.power }}%
+                  1~20%
                 </div>
               </div>
             </div>

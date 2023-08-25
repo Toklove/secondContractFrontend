@@ -9,7 +9,7 @@ const router = useRouter()
 const type = ref(router.currentRoute.value.query.type)
 console.log(type.value)
 onBeforeMount(async () => {
-  const { code, data, msg } = await other(type.value)
+  const { data } = await other(type.value)
   console.log(data)
   html.value = data
 })

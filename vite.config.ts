@@ -129,6 +129,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
               ws: false,
               changeOrigin: true,
             },
+          '/json': {
+              target: 'http://ip-api.com/',
+              ws: false,
+              changeOrigin: true,
+            },
             '/ws': {
               target: 'wss://api.huobi.pro/', // 这里是后台ws访问地址
               changeOrigin: true, // 允许跨域设置

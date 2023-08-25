@@ -29,6 +29,9 @@ watch(route, () => {
     active.value = 4
 })
 
+const contractPair = localStorage.getItem('contractPair')
+const exchangePair = localStorage.getItem('exchangePair')
+
 const whiteList = ref(['/login', '/register'])
 </script>
 
@@ -41,11 +44,11 @@ const whiteList = ref(['/login', '/register'])
       <van-tabbar-item :icon="active === 1 ? nav2IconActive : nav2Icon" to="/market">
         行情
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" to="/exchange?pair=btc_usdt">
-        交易
+      <van-tabbar-item :icon="active === 2 ? nav3IconActive : nav3Icon" :to="`/exchange?pair=${exchangePair || 'btc_usdt'}`">
+        币币
       </van-tabbar-item>
-      <van-tabbar-item :icon="active === 3 ? nav4IconActive : nav4Icon" to="/contract?pair=btc_usdt">
-        合约
+      <van-tabbar-item :icon="active === 3 ? nav4IconActive : nav4Icon" :to="`/contract?pair=${contractPair || 'btc_usdt'}`">
+        交易
       </van-tabbar-item>
       <van-tabbar-item :icon="active === 4 ? nav5IconActive : nav5Icon" to="/wallet">
         资产

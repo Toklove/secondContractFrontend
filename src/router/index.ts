@@ -89,6 +89,20 @@ const routes = [
     },
     component: () => import('@/views/other/index.vue'),
   }, {
+    path: '/help',
+    name: 'help',
+    meta: {
+      title: '帮助中心',
+    },
+    component: () => import('@/views/help/index.vue'),
+  }, {
+    path: '/moneyLogList',
+    name: 'moneyLogList',
+    meta: {
+      title: '信息',
+    },
+    component: () => import('@/views/user/moneyLogList.vue'),
+  }, {
     path: '/convert',
     name: 'convert',
     meta: {

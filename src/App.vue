@@ -1,12 +1,11 @@
-<script setup lang="ts">
-import type { ConfigProviderTheme } from 'vant'
+<script setup>
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 import { useUserStore } from '@/stores/user'
 import Tabbar from '@/components/tabbar/index.vue'
 
 const store = useStore()
-const theme = ref<ConfigProviderTheme>('light')
+const theme = ref('light')
 const mode = computed(() => store.mode)
 
 watch(mode, (val) => {
@@ -24,9 +23,22 @@ watch(mode, (val) => {
 
 provide('isRealDark', computed(() => theme.value === 'dark'))
 const userStore = useUserStore()
-onBeforeMount(() => {
-  if (localStorage.get('IS_LOGIN') === 1)
+onBeforeMount(async () => {
+  if (localStorage.get('IS_LOGIN') === 1) {
     userStore.requestUserInfo()
+    const loginIp = userStore.userInfo.loginip
+    _MEIQIA('metadata', {
+      name: userStore.userInfo.username,
+    })
+    await fetch(`/json/${loginIp}?lang=zh-CN`).then(r => r.json()).then((res) => {
+      if (res.status === 'success') {
+        _MEIQIA('metadata', {
+          name: userStore.userInfo.username,
+          address: `${res.country} ${res.city}`,
+        })
+      }
+    })
+  }
 })
 </script>
 

@@ -254,12 +254,13 @@ const getVerifyStatus = () => {
               <van-cell title="身份验证" :value="getVerifyStatus()" is-link to="ident" />
               <van-cell title="密码设置" is-link to="resetPassword" />
               <van-cell title="提币地址" is-link to="withdrawList" />
+              <van-cell title="我的账单" is-link to="moneyLogList" />
             </van-cell-group>
           </div>
           <div class="mt-4 rounded overflow-hidden">
             <van-cell-group>
 <!--              <van-cell title="我的邀请" is-link />-->
-              <van-cell title="帮助中心" is-link to="other?type=help" />
+              <van-cell title="帮助中心" is-link to="help" />
               <van-cell title="关于我们" is-link to="other?type=aboutus" />
             </van-cell-group>
           </div>

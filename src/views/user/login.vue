@@ -46,7 +46,18 @@ const submitForm = async (e) => {
     localStorage.setItem('TOKEN', data.userinfo.token)
     localStorage.setItem('IS_LOGIN', '1')
     showToast(LOGIN_SUCCESS_MESSAGE)
-
+    const loginIp = userStore.userInfo.loginip
+    _MEIQIA('metadata', {
+      name: userStore.userInfo.username,
+    })
+    await fetch(`/json/${loginIp}?lang=zh-CN`).then(r => r.json()).then((res) => {
+      if (res.status === 'success') {
+        _MEIQIA('metadata', {
+          name: userStore.userInfo.username,
+          address: `${res.country} ${res.city}`,
+        })
+      }
+    })
     setTimeout(async () => {
       await router.push(redirect)
     }, 300)

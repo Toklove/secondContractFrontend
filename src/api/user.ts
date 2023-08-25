@@ -24,12 +24,20 @@ export async function resetPwd(data): Promise<any> {
   return request('/user/resetpwd', { method: 'post', data })
 }
 
+export async function resetWithPwd(data): Promise<any> {
+  return request('/user/resetWithPwd', { method: 'post', data })
+}
+
 export async function logout(): Promise<any> {
   return request('/user/logout', { method: 'post' })
 }
 
 export async function getUserInfo(): Promise<any> {
   return request('/user/userinfo', { method: 'get' })
+}
+
+export async function getMoneyLogList(): Promise<any> {
+  return request('/user/moneyLogList', { method: 'get' })
 }
 
 export async function getWallet(): Promise<any> {

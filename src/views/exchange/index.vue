@@ -213,6 +213,7 @@ const getData = async () => {
 }
 
 const changeSymbol = async (symbol) => {
+  localStorage.setItem('exchangePair', symbol)
   await router.push({ path: 'exchange', query: { pair: symbol } })
   location.reload()
 }

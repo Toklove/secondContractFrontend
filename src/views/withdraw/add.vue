@@ -29,6 +29,8 @@ const validForm = ref({
   },
 })
 
+const router = useRouter()
+
 const submitForm = async (e) => {
   e.preventDefault()
   if (!form.value.number) {
@@ -55,6 +57,9 @@ const submitForm = async (e) => {
     return
   }
   showToast('添加成功')
+  setTimeout(() => {
+    router.push({ name: 'withdrawList' })
+  }, 300)
 }
 
 // function successCaptcha(e) {
@@ -154,7 +159,7 @@ const confirmPicker = async (e) => {
         </div>
 
         <div>
-<!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" />-->
+          <!--          <mi-captcha ref="captcha" theme-color="#3a98fa" modal-bg-color="#3a98fa" width="100%" init-action="/api/captcha/init" verify-action="/api/captcha/verify" @success="successCaptcha" /> -->
         </div>
         <div class="form-btn-box mt-[24px]">
           <van-button block type="primary" native-type="submit">

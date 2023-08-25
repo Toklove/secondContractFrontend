@@ -12,6 +12,10 @@ export async function other(type): Promise<any> {
   return request(`/index/other?type=${type}`)
 }
 
+export async function getHelp(): Promise<any> {
+  return request('/index/help')
+}
+
 export async function indexConfig(): Promise<any> {
   return request('/index/index')
 }

@@ -73,6 +73,11 @@ onBeforeMount(async () => {
                 <span class="text-[#888B91]">{{ item.createtime_text }}</span>
               </div>
               <div class="flex flex-row items-center justify-between text-[10px] mb-2">
+                <span class="text-[#888B91]">委托金额</span>
+
+                <span class="text-[#282B38]">{{ item.amount }}</span>
+              </div>
+              <div class="flex flex-row items-center justify-between text-[10px] mb-2">
                 <span class="text-[#888B91]">委托价格</span>
 
                 <span class="text-[#282B38]">{{ item.buy_price }}</span>
@@ -122,6 +127,11 @@ onBeforeMount(async () => {
                 <span class="text-[#888B91]">盈利金额</span>
 
                 <span class="text-[#282B38]" :class="item.is_win == 0 ? 'red' : 'green'">{{ item.is_win == 0 ? '-' : '+' }}{{ item.ploss }}</span>
+              </div>
+              <div class="flex flex-row items-center justify-between text-[10px] mb-2">
+                <span class="text-[#888B91]">委托金额</span>
+
+                <span class="text-[#282B38]">{{ item.amount }}</span>
               </div>
               <div class="flex flex-row items-center justify-between text-[10px] mb-2">
                 <span class="text-[#888B91]">委托价格</span>
